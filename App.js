@@ -1,60 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
-function App() {
-  const [rowCount, setRowCount] = useState(0);
-  const [inputText, setInputText] = useState('');
-  const [tableData, setTableData] = useState([]);
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  const handleGenerateTable = () => {
-    const data = [];
-    for (let i = 0; i < rowCount; i++) {
-      data.push({ index: i, content: inputText });
+function generateRandomMatrix() {
+  const matrix = [];
+  for (let i = 0; i < 4; i++) {
+    const row = [];
+    for (let j = 0; j < 4; j++) {
+      row.push(getRandomInt(1, 100)); // Gera um número inteiro aleatório entre 1 e 100
     }
-    setTableData(data);
-  };
+    matrix.push(row);
+  }
+  return matrix;
+}
+
+function App() {
+  const randomMatrix = generateRandomMatrix();
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Criar Tabela</h1>
-        <label htmlFor="rowCount">Número de Linhas:</label>
-        <input
-          type="number"
-          id="rowCount"
-          value={rowCount}
-          onChange={(e) => setRowCount(parseInt(e.target.value))}
-        />
-        <br />
-        <label htmlFor="inputText">Texto para as Linhas:</label>
-        <input
-          type="text"
-          id="inputText"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-        />
-        <br />
-        <button onClick={handleGenerateTable}>Gerar Tabela</button>
-        <br />
-        {tableData.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Índice</th>
-                <th>Conteúdo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((row, index) => (
-                <tr key={index}>
-                  <td>{row.index}</td>
-                  <td>{row.content}</td>
-                </tr>
+      <h1>Tabela de Números Aleatórios</h1>
+      <table>
+        <tbody>
+          {randomMatrix.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((number, columnIndex) => (
+                <td key={columnIndex}>{number}</td>
               ))}
-            </tbody>
-          </table>
-        )}
-      </header>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
